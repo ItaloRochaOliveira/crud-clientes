@@ -17,17 +17,11 @@ STATUS: Em processo...
 
 - Documentação: Em processo...
 
-## 📄Concepção do Projeto
-
-
-### Funcionalidades
+## Funcionalidades
 
 ```bash
 . Requisições:
-- Criar dados de clientes em um banco de dados.
-- Ler dados de clientes em um banco de dados.
-- Editar dados de clientes em um banco de dados.
-- Excluir dados de clientes em um banco de dados.
+- Criar, ler, editar, excluir dados de clientes em um banco de dados.
 ```
 
 
