@@ -3,13 +3,19 @@
 $erro = false;
 
 if(count($_POST) > 0){
-    include("connection.php");
+    require("lib/connection.php");
+    require("lib/upload.php");
 
     $nome = $_POST["nome"];
     $email = $_POST["email"];
     $nascimento = $_POST["nascimento"];
     $telefone = $_POST["telefone"];
     
+    if(strlen($_POST["senha"]) < 6 && strlen($_POST["senha"]) < 16){
+        $erro = "A senha deve ter entre 6 e 16 caracteres."; 
+    }
+
+    $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
 
     if(empty($nome)){
         $erro = "Nome não informado, por favor, preecha o item nome.";
@@ -40,10 +46,18 @@ if(count($_POST) > 0){
         echo $telefone;
     }
 
+    $path = "";
+    if(isset($_FILES['foto'])){
+        $arq = $_FILES['foto'];
+        $path = enviar_arquivo($arq["error"], $arq["size"], $arq['name'], $arq["tmp_name"]);
+        if($path == false)
+            $erro = "Falha ao enviar arquivo. Tente novamente.";
+    }
+
     if($erro){
         echo "<p> <b>ERRO: $erro</p> </b>";
     } else {
-        $sql_code = "INSERT INTO clientes (nome, email, telefone, nascimento, data_de_cadastro) VALUES ('$nome', '$email','$telefone', '$nascimento', NOW())";
+        $sql_code = "INSERT INTO clientes (nome, email, telefone, nascimento, data_de_cadastro, senha, foto) VALUES ('$nome', '$email','$telefone', '$nascimento', NOW(), '$senha', '$path')";
 
         $worked = $mysqli->query($sql_code) or die($mysqli->error);
 
@@ -124,7 +138,7 @@ if(count($_POST) > 0){
             </div>
             <div id="container">
                 Cadastrar cliente:
-                <form action="" method="POST" id="form">
+                <form action="" method="POST" id="form" enctype="multipart/form-data">
                     <p>
                         <label for="">Nome:</label>
                         <input value="<?php if(isset($_POST['nome'])) echo $_POST['nome']?>" name="nome" type="text">
@@ -146,6 +160,17 @@ if(count($_POST) > 0){
                         <label for="">Telefone:</label>
                         <input value="<?php if(isset($_POST['telefone'])) echo $_POST['telefone'] ?>" name="telefone"
                             type="text" placeholder="(11) 4002-8922">
+                    </p>
+
+                    <p>
+                        <label for="">Senha:</label>
+                        <input value="<?php if(isset($_POST['senha'])) echo $_POST['senha'] ?>" name="senha"
+                            type="text">
+                    </p>
+
+                    <p>
+                        <label for="">Foto do usuário:</label>
+                        <input type="file" name="foto">
                     </p>
 
                     <p id="button">
