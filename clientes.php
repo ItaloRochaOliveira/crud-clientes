@@ -1,5 +1,5 @@
 <?php 
-    include("connection.php");
+    include("lib/connection.php");
 
     $sql_search_clientes = "SELECT * FROM clientes";
 
