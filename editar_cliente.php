@@ -1,6 +1,7 @@
 <?php 
 
-include("connection.php");
+include("lib/connection.php");
+require("lib/upload.php");
 
 $id = intval($_GET['id']);
 $sql_search_client = "SELECT * FROM clientes WHERE id = '$id'";
@@ -11,12 +12,40 @@ $cliente = mysqli_fetch_assoc($query_cliente);
 $erro = false;
 
 if(count($_POST) > 0){
-    
-
     $nome = $_POST["nome"];
     $email = $_POST["email"];
     $nascimento = $_POST["nascimento"];
     $telefone = $_POST["telefone"];
+    $nova_senha = $_POST["senha"];
+
+    $sql_extra_senha = "";
+    $sql_extra_img = "";
+
+    if(!empty($nova_senha)){
+        if(strlen($nova_senha) < 6 && strlen($nova_senha) < 16)
+            echo "A senha deve ter de 6 a 16 caracteres.";
+        else {
+            $senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
+            $sql_extra_senha = " senha = '$senha_criptografada', ";
+        }
+    }
+
+    echo isset($_FILES["foto"]);
+
+    if(isset($_FILES["foto"])){
+        var_dump($_FILES);
+        
+        $arq = $_FILES['foto'];
+        $path = enviar_arquivo($arq["error"], $arq["size"], $arq['name'], $arq["tmp_name"]);
+        if($path == false)
+            $erro = "Falha ao enviar arquivo. Tente novamente.";
+        else 
+            $sql_extra_img = " foto = '$path', ";
+
+        if($cliente["foto"]){
+            unlink($cliente["foto"]);
+        }
+    }
     
 
     if(empty($nome)){
@@ -48,12 +77,18 @@ if(count($_POST) > 0){
     if($erro){
         echo "<p> <b>ERRO: $erro</p> </b>";
     } else {
+        echo $sql_extra_senha;
+        echo $sql_extra_img;
+        
         $sql_code = "UPDATE clientes
         SET nome = '$nome',
         email = '$email',
         telefone = '$telefone',
+        $sql_extra_senha
+        $sql_extra_img
         nascimento = '$nascimento'
-        WHERE id = '$id'";
+        
+        WHERE id = '$id' ";
 
         $worked = $mysqli->query($sql_code) or die($mysqli->error);
 
@@ -116,6 +151,18 @@ if(count($_POST) > 0){
         border-radius: 25%;
         min-height: 35px;
     }
+
+    #foto {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+    }
+
+    #container-img {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
     </style>
 </head>
 
@@ -129,7 +176,7 @@ if(count($_POST) > 0){
             </div>
             <div id="container">
                 Editar cliente <?php echo $cliente["nome"]?>:
-                <form action="" method="POST" id="form">
+                <form action="" method="POST" id="form" enctype="multipart/form-data">
                     <p>
                         <label for="">Nome:</label>
                         <input value="<?php echo $cliente['nome']?>" name="nome" type="text">
@@ -152,6 +199,21 @@ if(count($_POST) > 0){
                         <input
                             value="<?php if(!empty($cliente['telefone'])) echo formatar_telefone($cliente['telefone']) ?>"
                             name="telefone" type="text" placeholder="(11) 4002-8922">
+                    </p>
+
+                    <p>
+                        <label for="">Nova senha:</label>
+                        <input name="senha" type="text">
+                    </p>
+
+                    <p id="container-img">
+                        <img src="<?php echo isset($cliente['foto']) ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
+" alt="foto de perfil" id="foto">
+
+                        <span>
+                            <label for="">Foto do usuário:</label>
+                            <input type="file" name="foto">
+                        </span>
                     </p>
 
                     <p id="button">
