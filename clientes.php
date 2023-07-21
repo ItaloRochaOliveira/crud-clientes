@@ -37,6 +37,17 @@
     section {
         margin: 30px;
     }
+
+    #image {
+        display: flex;
+        justify-content: center;
+    }
+
+    #foto {
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+    }
     </style>
 </head>
 
@@ -53,6 +64,7 @@
                 <table border="1" cellpadding="10">
                     <thead>
                         <th>ID</th>
+                        <th>Foto</th>
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
@@ -86,6 +98,9 @@
         ?>
                         <tr>
                             <td><?php echo $cliente['id']?></td>
+                            <td id="image"><img src="<?php echo isset($cliente['foto']) ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
+" alt="foto de perfil" id="foto">
+                            </td>
                             <td><?php echo $cliente['nome']?></td>
                             <td><?php echo $cliente['email']?></td>
                             <td><?php echo $telefone?></td>

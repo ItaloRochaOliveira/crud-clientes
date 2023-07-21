@@ -1,6 +1,6 @@
 <?php 
 
-include("connection.php");
+include("lib/connection.php");
 
 if(isset($_POST["confirm"])){
     echo "<p> funciona </p>";
@@ -37,8 +37,20 @@ if(isset($_POST["confirm"])){
 </section>
 
 <?php
-
 $id = intval($_GET['id']);
+
+$sql_search_client = "SELECT foto FROM clientes WHERE id = '$id'";
+$query_cliente = $mysqli->query($sql_search_client) or die($mysqli->error);
+
+$cliente_foto = mysqli_fetch_assoc($query_cliente);
+
+echo $cliente_foto["foto"];
+
+if (!empty($cliente_foto["foto"])){
+    unlink($cliente_foto["foto"]);
+}
+
+
 $sql_delete_code = "DELETE FROM clientes WHERE id = '$id'";
 $sql_query = $mysqli->query($sql_delete_code) or die($mysqli->error);
 
