@@ -1,5 +1,15 @@
 <?php 
 
+if(!isset($_SESSION))
+    session_start();
+
+if( $_SESSION["admin"] != 1){
+    header("Location: clientes.php");
+
+    die();
+}
+
+
 include("lib/connection.php");
 
 if(isset($_POST["confirm"])){
