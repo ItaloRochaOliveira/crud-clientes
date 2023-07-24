@@ -1,5 +1,14 @@
 <?php 
 
+if(!isset($_SESSION))
+    session_start();
+
+if($_SESSION["admin"] != 1){
+    header("Location: clientes.php");
+
+    die();
+}
+
 $erro = false;
 
 if(count($_POST) > 0){
