@@ -12,7 +12,9 @@
 
     include("lib/connection.php");
 
-    $sql_search_clientes = "SELECT * FROM clientes";
+    $id = $_SESSION["user"];
+
+    $sql_search_clientes = !$_SESSION["admin"] ? "SELECT * FROM clientes" : "SELECT * FROM clientes WHERE id != '$id'";
 
     $query_clientes = $mysqli->query($sql_search_clientes) or die($mysqli->error);
     
