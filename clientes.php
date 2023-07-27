@@ -8,13 +8,13 @@
         die();
     }
 
-    var_dump($_SESSION);
-
     include("lib/connection.php");
 
     $id = $_SESSION["user"];
 
-    $sql_search_clientes = !$_SESSION["admin"] ? "SELECT * FROM clientes" : "SELECT * FROM clientes WHERE id != '$id'";
+    echo $id;
+
+    $sql_search_clientes =  "SELECT * FROM clientes" ;
 
     $query_clientes = $mysqli->query($sql_search_clientes) or die($mysqli->error);
     
@@ -134,7 +134,7 @@
                             <td><?php echo $telefone?></td>
                             <td><?php echo $nascimento?></td>
                             <td><?php echo $data_de_cadastro?></td>
-                            <?php if($_SESSION["admin"]){?>
+                            <?php if($_SESSION["admin"] && $cliente['id'] != $id){?>
                             <td>
                                 <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>">editar</a>
                                 <a href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>">deletar</a>
