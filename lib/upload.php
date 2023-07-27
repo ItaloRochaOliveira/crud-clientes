@@ -3,7 +3,7 @@
 function enviar_arquivo($error, $size, $name, $tmp){
 
     if($error){
-        die("Falha ao enviar arquivo");
+        die("Falha ao enviar arquivo a");
     }
 
     if($size > 2097152) //2 * 1024 * 1024

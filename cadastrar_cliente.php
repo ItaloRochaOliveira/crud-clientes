@@ -1,17 +1,12 @@
 <?php 
-
-if(!isset($_SESSION))
-    session_start();
-
-if(!$_SESSION["admin"]){
-    header("Location: clientes.php");
-
-    die();
-}
-
 $erro = false;
+$erro_css = false;
 
 if(count($_POST) > 0){
+    var_dump($_POST);
+    var_dump($_FILES);
+    
+    
     require("lib/connection.php");
     require("lib/upload.php");
 
@@ -19,19 +14,24 @@ if(count($_POST) > 0){
     $email = $_POST["email"];
     $nascimento = $_POST["nascimento"];
     $telefone = $_POST["telefone"];
+
     
     if(strlen($_POST["senha"]) < 6 && strlen($_POST["senha"]) < 16){
         $erro = "A senha deve ter entre 6 e 16 caracteres."; 
+        $erro_css = "in_password";
     }
 
     $senha = password_hash($_POST["senha"], PASSWORD_DEFAULT);
 
+
     if(empty($nome)){
         $erro = "Nome não informado, por favor, preecha o item nome.";
+        $erro_css = "in-name";
     }
 
     if(empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)){
         $erro = "Email não informado, por favor, preecha o item email.";
+        $erro_css = "in-email";
     }
 
     if (!empty($nascimento)){
@@ -56,16 +56,17 @@ if(count($_POST) > 0){
     }
 
     $path = "";
-    if(isset($_FILES['foto'])){
+    $file = $_FILES['foto'];
+
+    
+    if(!empty($file['name'])){
         $arq = $_FILES['foto'];
         $path = enviar_arquivo($arq["error"], $arq["size"], $arq['name'], $arq["tmp_name"]);
         if($path == false)
             $erro = "Falha ao enviar arquivo. Tente novamente.";
     }
 
-    if($erro){
-        echo "<p> <b>ERRO: $erro</p> </b>";
-    } else {
+    if(!$erro){
         $sql_code = "INSERT INTO clientes (nome, email, telefone, nascimento, data_de_cadastro, senha, foto) VALUES ('$nome', '$email','$telefone', '$nascimento', NOW(), '$senha', '$path')";
 
         $worked = $mysqli->query($sql_code) or die($mysqli->error);
@@ -73,8 +74,26 @@ if(count($_POST) > 0){
         if($worked){
             echo "<p> <b> Cliente cadastrado com sucesso!!</p> </b>";
             unset($_POST);
+
+            $sql_search = "SELECT id, admin FROM clientes WHERE email = '$email'";
+
+            $search_successfully = $mysqli->query($sql_search) or die("Usuario não foi cadastrado");
+
+            if($search_successfully->num_rows != 0){
+                $user = $search_successfully->fetch_assoc();
+
+                if(!isset($_SESSION))
+                    session_start();
+
+                $_SESSION["user"] = $user["id"];
+                $_SESSION["admin"] = $user["admin"];
+
+                header("Location: clientes.php");
+            }
+
+            
         }
-    }
+    } 
 }
 
 ?>
@@ -86,55 +105,15 @@ if(count($_POST) > 0){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Cliente</title>
-    <style>
-    section>div:first-child {
-        display: flex;
-        justify-content: right;
-    }
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/cadastrar_clientes.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 
-    #voltar {
-        border-radius: 25px;
-        min-height: 35px;
-    }
+    <script type="text/javascript" src="js/showPassword.js" defer></script>
 
-    #link {
-        text-decoration: none;
-        color: black;
-    }
-
-    section {
-        margin: 30px;
-    }
-
-    #container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #form {
-        /* display: flex;
-        flex-direction: column;
-        justify-content: center; */
-        align-items: center;
-        padding: 0px 20px;
-        min-width: 200px;
-        width: 30%;
-
-        border: 1px solid black;
-        border-radius: 25px;
-    }
-
-    #button {
-        display: flex;
-        justify-content: center;
-        margin-top: 40px;
-
-        border-radius: 25%;
-        min-height: 35px;
-    }
-    </style>
 </head>
 
 <body>
@@ -145,48 +124,86 @@ if(count($_POST) > 0){
                     <a id="link" href="clientes.php">Ir para a lista de cliente &#62;</a>
                 </button>
             </div>
-            <div id="container">
-                Cadastrar cliente:
-                <form action="" method="POST" id="form" enctype="multipart/form-data">
-                    <p>
-                        <label for="">Nome:</label>
-                        <input value="<?php if(isset($_POST['nome'])) echo $_POST['nome']?>" name="nome" type="text">
-                    </p>
+            <div id="container-principal">
+                <div id="cotainer-do-formulario">
 
-                    <p>
-                        <label for="">Email:</label>
-                        <input value="<?php if(isset($_POST['email'])) echo $_POST['email'] ?>" name="email"
-                            type="text">
-                    </p>
+                    <form action="" method="POST" id="form" enctype="multipart/form-data">
+                        <h1 id="titulo">Criar cadastro</h1>
 
-                    <p>
-                        <label for="">Data de Nascimento:</label>
-                        <input value="<?php if(isset($_POST['nascimento'])) echo $_POST['nascimento'] ?>"
-                            name="nascimento" type="text">
-                    </p>
+                        <p>
+                            <label class="label" for="">Nome</label>
 
-                    <p>
-                        <label for="">Telefone:</label>
-                        <input value="<?php if(isset($_POST['telefone'])) echo $_POST['telefone'] ?>" name="telefone"
-                            type="text" placeholder="(11) 4002-8922">
-                    </p>
+                        <div class="incluir-asterisco">
+                            <input class="input" value="<?php if(isset($_POST['nome'])) echo $_POST['nome']?>"
+                                name="nome" type="text">
+                            <span
+                                class="incluir-asterisco-2 <?php if($erro_css == "in-name"){echo "error-red";}?>">*</span>
+                        </div>
+                        </p>
 
-                    <p>
-                        <label for="">Senha:</label>
-                        <input value="<?php if(isset($_POST['senha'])) echo $_POST['senha'] ?>" name="senha"
-                            type="text">
-                    </p>
+                        <p>
+                            <label class="label" for="">Email</label>
 
-                    <p>
-                        <label for="">Foto do usuário:</label>
-                        <input type="file" name="foto">
-                    </p>
+                        <div class="incluir-asterisco">
+                            <input class="input" value="<?php if(isset($_POST['email'])) echo $_POST['email'] ?>"
+                                name="email" type="text">
 
-                    <p id="button">
-                        <button type="submit">Salvar cliente</button>
-                    </p>
+                            <span
+                                class="incluir-asterisco-2 <?php if($erro_css == "in-email"){echo "error-red";}?>">*</span>
+                        </div>
+                        </p>
 
-                </form>
+                        <p>
+                            <label class="label" for="">Data de Nascimento</label>
+                            <input class="input"
+                                value="<?php if(isset($_POST['nascimento'])) echo $_POST['nascimento'] ?>"
+                                name="nascimento" type="text">
+                        </p>
+
+                        <p>
+                            <label for="">Telefone</label>
+                            <input class="input" value="<?php if(isset($_POST['telefone'])) echo $_POST['telefone'] ?>"
+                                name="telefone" type="text" placeholder="(11) 4002-8922">
+                        </p>
+
+                        <p>
+                            <label class="label" for="">Senha:</label>
+
+
+                        <div id="password">
+                            <div class="incluir-asterisco">
+                                <input class="input" id="senha"
+                                    value="<?php if(isset($_POST['senha'])) echo $_POST['senha'] ?>" name="senha"
+                                    type="password">
+
+                                <span
+                                    class="incluir-asterisco-2 <?php if($erro_css == "in_password"){echo "error-red";}?>">*</span>
+                            </div>
+
+                            <span class="material-symbols-outlined">
+                                visibility
+                            </span>
+                        </div>
+                        </p>
+
+                        <p>
+                            <label class="label" id="send-photo" for="foto">Foto do usuário</label>
+
+                            <input type="file" name="foto" id="escolher-ficheiro">
+                        </p>
+
+                        <?php if($erro){?>
+                        <p id="error-message"><?php echo $erro . "*"?></p>
+                        <?php } else{?>
+                        <p id="error-message">itens obrigatórios!*</p>
+                        <?php }?>
+
+                        <p>
+                            <button type="submit" id="signup-botao">Cadastrar</button>
+                        </p>
+
+                    </form>
+                </div>
             </div>
         </section>
     </main>

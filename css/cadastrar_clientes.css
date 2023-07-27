@@ -8,6 +8,11 @@ body {
   background-image: linear-gradient(90deg, #1687f7, #9a16f7);
 }
 
+section > div:first-child {
+  display: flex;
+  justify-content: right;
+}
+
 #container-principal {
   display: flex;
   justify-content: center;
@@ -15,8 +20,7 @@ body {
 
 #cotainer-do-formulario {
   min-width: 200px;
-  width: 25%;
-  margin: 20px;
+  width: 30%;
 
   background-color: white;
 
@@ -50,16 +54,8 @@ body {
   outline: 0;
 }
 
-#password {
-  position: relative;
-  width: 100%;
-}
-
-.material-symbols-outlined {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  cursor: pointer;
+#escolher-ficheiro {
+  margin: 0 0 20px 0;
 }
 
 #error-message {
@@ -68,27 +64,7 @@ body {
   color: gray;
 }
 
-#container-login {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  gap: 30px;
-  margin: 3% 0;
-}
-
-#link-signup {
-  text-align: center;
-  text-decoration: none;
-
-  color: blue;
-}
-
-#link-signup:active {
-  color: blue;
-}
-
-#login-botao {
+#signup-botao {
   width: 100%;
   min-height: 40px;
 
@@ -98,6 +74,34 @@ body {
   border-radius: 25px;
 }
 
-#login-botao:hover {
+#signup-botao:hover {
+  cursor: pointer;
+}
+
+.incluir-asterisco {
+  position: relative;
+  width: 100%;
+}
+
+#senha {
+  position: relative;
+  width: 100%;
+}
+
+.incluir-asterisco-2 {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.error-red {
+  color: red;
+}
+
+#password {
+  display: flex;
+}
+
+.material-symbols-outlined {
   cursor: pointer;
 }

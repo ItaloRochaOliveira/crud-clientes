@@ -2,7 +2,6 @@
 
 require("lib/connection.php");
 
-
 if(isset($_POST["email"]) && isset($_POST["senha"])){
     $email = $mysqli->escape_string($_POST["email"]);
     $senha = $_POST["senha"];
@@ -27,8 +26,6 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
         if(!isset($_SESSION))
             session_start();
 
-        var_dump($_SESSION);
-
         $_SESSION["user"] = $user["id"];
         $_SESSION["admin"] = $user["admin"];
 
@@ -46,7 +43,15 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    <link rel="stylesheet" href="css/default.css">
     <link rel="stylesheet" href="css/index.css">
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+    <script type="text/javascript" src="js/showPassword.js" defer></script>
 </head>
 
 <body>
@@ -70,19 +75,34 @@ if(isset($_POST["email"]) && isset($_POST["senha"])){
 
                     <br>
 
-                    <input type="text" name="senha" class="input">
+                <div id="password">
+                    <input type="password" name="senha" class="input" id="senha">
+
+                    <span class="material-symbols-outlined">
+                        visibility
+                    </span>
+
+                </div>
                 </p>
 
                 <?php if(isset($error_mensage)){?>
-                <p id="error-message"><?php echo "*" . $error_mensage?></p>
+                <p id="error-message"><?php echo $error_mensage . "*"?></p>
                 <?php }?>
 
                 <div id="container-login">
                     <button type="submit" id="login-botao">Entrar</button>
+
+                    <a href="cadastrar_cliente.php" id="link-signup">ainda não sou cliente</a>
+                </div>
+
+                <div>
+
                 </div>
             </form>
         </div>
     </div>
+
+
 </body>
 
 </html>
