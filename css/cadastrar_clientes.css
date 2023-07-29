@@ -1,26 +1,40 @@
-body {
+section {
   display: flex;
-  flex-direction: column;
 
-  width: 100%;
-  min-height: 100%;
+  justify-content: left;
 
-  background-image: linear-gradient(90deg, #1687f7, #9a16f7);
+  position: relative;
 }
 
-section > div:first-child {
-  display: flex;
-  justify-content: right;
+#voltar {
+  position: absolute;
+  top: 15px;
+  left: 5px;
+
+  min-height: 40px;
+  padding: 5px;
+
+  background-image: white;
+
+  border: none;
+  border-radius: 25px;
+}
+
+#voltar:hover {
+  cursor: pointer;
 }
 
 #container-principal {
   display: flex;
   justify-content: center;
+
+  width: 100%;
 }
 
 #cotainer-do-formulario {
   min-width: 200px;
   width: 30%;
+  margin: 20px;
 
   background-color: white;
 
@@ -76,6 +90,22 @@ section > div:first-child {
 
 #signup-botao:hover {
   cursor: pointer;
+}
+
+#container-signup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  gap: 30px;
+  margin: 3% 0;
+}
+
+#link-signup {
+  text-align: center;
+  text-decoration: none;
+
+  color: blue;
 }
 
 .incluir-asterisco {

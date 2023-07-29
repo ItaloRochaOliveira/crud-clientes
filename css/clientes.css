@@ -1,0 +1,114 @@
+/* * {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+} */
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-button {
+  min-height: 40px;
+  padding: 5px;
+
+  background-image: white;
+
+  border: none;
+  border-radius: 25px;
+}
+
+#cadastro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin: 30px;
+  padding-bottom: 20px;
+
+  background-color: rgba(255, 255, 255, 0.102);
+
+  box-shadow: 1px 1px 10px black;
+}
+
+table,
+td,
+th {
+  padding: 10px;
+
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  padding: 30px;
+
+  width: 98%;
+}
+
+tbody {
+  padding: 10px;
+}
+
+tr {
+  margin: 20px;
+}
+
+tr:nth-child(2n + 1) {
+  background-color: rgba(255, 255, 255, 0.204);
+}
+
+thead {
+  background: rgba(255, 255, 255, 0);
+}
+
+.botao {
+  border-radius: 25px;
+  min-height: 35px;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+#image {
+  display: flex;
+  justify-content: center;
+}
+
+#foto {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+}
+
+@media (max-width: 750px) {
+  table thead {
+    display: none;
+  }
+
+  table td {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  table tr {
+    display: block;
+  }
+
+  table td:first-of-type {
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+  }
+
+  table td:not(:first-of-type)::before {
+    content: attr(data-title);
+    display: block;
+    font-weight: bold;
+  }
+}
