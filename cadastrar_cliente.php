@@ -2,6 +2,10 @@
 $erro = false;
 $erro_css = false;
 
+
+$referer = !empty($_SERVER['HTTP_REFERER']) ? pathinfo($_SERVER['HTTP_REFERER'], PATHINFO_BASENAME) : null;
+
+
 if(count($_POST) > 0){
     var_dump($_POST);
     var_dump($_FILES);
@@ -119,16 +123,20 @@ if(count($_POST) > 0){
 <body>
     <main>
         <section>
+            <?php if(isset($referer) && $referer == "clientes.php"){?>
             <div>
-                <button id="voltar">
-                    <a id="link" href="clientes.php">Ir para a lista de cliente &#62;</a>
-                </button>
+                <a id="link" href="clientes.php"><button id="voltar">
+                        &#60; Ir para a lista de cliente
+                    </button> </a>
             </div>
+            <?php }?>
             <div id="container-principal">
                 <div id="cotainer-do-formulario">
 
                     <form action="" method="POST" id="form" enctype="multipart/form-data">
-                        <h1 id="titulo">Criar cadastro</h1>
+                        <h1 id="titulo">
+                            <?php echo isset($referer) && $referer == "clientes.php" ? "Criar usuário" : "Criar cadastro"?>
+                        </h1>
 
                         <p>
                             <label class="label" for="">Nome</label>
@@ -154,10 +162,12 @@ if(count($_POST) > 0){
                         </p>
 
                         <p>
+                        <div>
                             <label class="label" for="">Data de Nascimento</label>
                             <input class="input"
                                 value="<?php if(isset($_POST['nascimento'])) echo $_POST['nascimento'] ?>"
                                 name="nascimento" type="text">
+                        </div>
                         </p>
 
                         <p>
@@ -198,9 +208,16 @@ if(count($_POST) > 0){
                         <p id="error-message">itens obrigatórios!*</p>
                         <?php }?>
 
-                        <p>
-                            <button type="submit" id="signup-botao">Cadastrar</button>
-                        </p>
+                        <div id="container-signup">
+                            <button type="submit"
+                                id="signup-botao"><?php echo isset($referer) && $referer == "clientes.php" ? "Criar usuário" : "Cadastrar"?></button>
+
+                            <?php if(isset($referer) && $referer == "index.php"){?>
+                            <a href="index.php" id="link-signup">já é usuário?</a>
+                            <?php } ?>
+                        </div>
+
+
 
                     </form>
                 </div>

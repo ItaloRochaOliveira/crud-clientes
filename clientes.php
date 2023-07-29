@@ -1,4 +1,5 @@
 <?php 
+    
     if(!isset($_SESSION))
         session_start();
 
@@ -12,8 +13,6 @@
 
     $id = $_SESSION["user"];
 
-    echo $id;
-
     $sql_search_clientes =  "SELECT * FROM clientes" ;
 
     $query_clientes = $mysqli->query($sql_search_clientes) or die($mysqli->error);
@@ -22,70 +21,35 @@
 ?>
 
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Clientes</title>
-    <style>
-    #head {
-        display: flex;
-        justify-content: space-between;
-    }
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/clientes.css">
 
-    .botao {
-        border-radius: 25px;
-        min-height: 35px;
-    }
-
-    .link {
-        text-decoration: none;
-        color: black;
-    }
-
-    #cadastro {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
-
-    section {
-        margin: 30px;
-    }
-
-    #image {
-        display: flex;
-        justify-content: center;
-    }
-
-    #foto {
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-    }
-    </style>
 </head>
 
 <body>
+
+    <header>
+        <button class="botao" class="header-button"><a href="logout.php" class="link">&#60; Logout</a></button>
+
+        <?php if($_SESSION["admin"]){?>
+        <button class="botao" class="header-button"><a href="cadastrar_cliente.php" class="link"> Ir para o
+                cadastro &#62;</a></button>
+        <?php }?>
+    </header>
     <section>
         <main>
-            <div id="head">
-                <button class="botao"><a href="logout.php" class="link">&#60; Logout</a></button>
-
-                <?php if($_SESSION["admin"]){?>
-                <button class="botao"><a href="cadastrar_cliente.php" class="link"> Ir para o
-                        cadastro &#62;</a></button>
-                <?php }?>
-            </div>
+            <h1>Lista de Clientes</h1>
+            <p>Estes são os clientes cadastrados no seu sistema: </p>
 
             <div id="cadastro">
-                <h1>Lista de Clientes</h1>
-                <p>Estes são os clientes cadastrados no seu sistema: </p>
-
-                <table border="1" cellpadding="10">
+                <table>
                     <thead>
                         <th>ID</th>
                         <th>ADM?</th>
@@ -136,17 +100,23 @@
                             <td><?php echo $data_de_cadastro?></td>
                             <?php if($_SESSION["admin"] && $cliente['id'] != $id){?>
                             <td>
-                                <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>">editar</a>
-                                <a href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>">deletar</a>
+                                <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>"><button>editar</button></a>
+                                <a
+                                    href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>"><button>deletar</button></a>
                             </td>
-                            <?php } ?>
+                            <?php } else { ?>
+                            <td></td>
+                            <?php }?>
                         </tr>
                         <?php } } ?>
                     </tbody>
                 </table>
             </div>
         </main>
+
+
     </section>
+
 </body>
 
 </html>
