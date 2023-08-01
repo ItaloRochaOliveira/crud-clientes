@@ -20,8 +20,8 @@ STATUS: Em processo...
 
 ### Layout Desktop
 
-| <img src="/assents/login_page_desktok.png" width=100%><br><sub>Login</sub><br> | <img src="/assents/layout-desktop-1.png" width=100%><sub>Home Page</sub><br> |
-| :----------------------------------------------------------------------------: | :--------------------------------------------------------------------------: |
+| <img src="/assents/login_page_desktok.png" width=100%><br><sub>Login</sub><br> | <img src="/assents/home_page_desktop.png" width=100%><sub>Home Page</sub><br> |
+| :----------------------------------------------------------------------------: | :---------------------------------------------------------------------------: |
 
 ## Funcionalidades
 
