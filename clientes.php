@@ -99,8 +99,12 @@
                             <td><?php echo $nascimento?></td>
                             <td><?php echo $data_de_cadastro?></td>
                             <td>
+                                <?php 
+                                if($_SESSION["admin"]){
+                                ?>
                                 <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>"><button
                                         class="button-action edit-button">editar</button></a>
+                                <?php }?>
                                 <?php if($_SESSION["admin"] && $cliente['id'] != $id){?>
 
                                 <a href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>"><button

@@ -19,26 +19,8 @@ if(isset($_POST["confirm"])){
 ?>
 
 <head>
-    <style>
-    #exclusao-section {
-        position: static;
-        top: 50%;
-        left: 50%;
-
-        /* transform: translate(-50%, -50%); */
-
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        width: 30%;
-        margin: auto;
-
-        border: 1px solid black;
-    }
-    </style>
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/delete_cliente.css">
 </head>
 
 <section id="exclusao-section">
@@ -77,60 +59,8 @@ die();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deletar Cliente</title>
-    <style>
-    section {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        margin: 30px;
-    }
-
-    section>div:first-child {
-        width: 200px;
-
-        align-items: center;
-        padding: 0px 20px;
-        min-width: 200px;
-        width: 30%;
-        padding: 10px;
-
-        border: 1px solid black;
-        border-radius: 25px;
-    }
-
-    section div div {
-        display: flex;
-        justify-content: center;
-        gap: 80px;
-    }
-
-    section button {
-        border-radius: 25px;
-        width: 100px;
-        height: 40px;
-    }
-
-    #exclusao-section {
-        position: static;
-        top: 50%;
-        left: 50%;
-
-        /* transform: translate(-50%, -50%); */
-
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        width: 30%;
-        margin: auto;
-
-        border: 1px solid black;
-    }
-    </style>
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/delete_cliente.css">
 </head>
 
 <body>

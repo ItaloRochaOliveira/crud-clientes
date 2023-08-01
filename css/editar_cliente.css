@@ -147,3 +147,28 @@ section {
   justify-content: space-between;
   gap: 20px;
 }
+
+#show-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-55%, -55%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 30%;
+  height: 90%;
+  margin: 20px;
+  border: 0px solid black;
+  border-radius: 25px;
+
+  backdrop-filter: blur(10px);
+}
+
+#to-hide-message {
+  display: none;
+}
