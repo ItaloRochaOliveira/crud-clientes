@@ -132,8 +132,65 @@ tbody tr:nth-child(2n + 1) {
   }
 
   table td:not(:first-of-type)::before {
-    content: attr(data-title);
     display: block;
     font-weight: bold;
+
+    content: "";
+  }
+
+  table td:nth-child(2)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "ADM?";
+  }
+
+  table td:nth-child(3)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "";
+  }
+
+  table td:nth-child(4)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Nome:";
+  }
+
+  table td:nth-child(5)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Email:";
+  }
+
+  table td:nth-child(6)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Telefone:";
+  }
+
+  table td:nth-child(7)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Nascimento:";
+  }
+
+  table td:nth-child(8)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Data:";
+  }
+
+  table td:nth-child(9)::before {
+    display: block;
+    font-weight: bold;
+
+    content: "Ações:";
   }
 }

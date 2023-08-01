@@ -1,0 +1,61 @@
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: 30px;
+}
+
+section > div:first-child {
+  width: 200px;
+
+  align-items: center;
+  padding: 0px 20px;
+  min-width: 200px;
+  width: 30%;
+  padding: 10px;
+
+  border: 1px solid black;
+  border-radius: 25px;
+}
+
+section div div {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+}
+
+section button {
+  border-radius: 25px;
+  width: 100px;
+  height: 40px;
+}
+
+#exclusao-section {
+  position: static;
+  top: 0;
+  left: 50%;
+
+  /* transform: translate(-50%, -50%); */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 30%;
+  margin: auto;
+
+  border: 1px solid black;
+}
+
+@media (max-width: 800px) {
+  section div div {
+    gap: 10%;
+  }
+
+  section button {
+    width: 80px;
+  }
+}

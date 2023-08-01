@@ -20,6 +20,25 @@ $query_cliente = $mysqli->query($sql_search_client) or die($mysqli->error);
 $cliente = mysqli_fetch_assoc($query_cliente);
 
 $erro = false;
+$message = false;
+
+// function change_message($value) {
+//     global $message;
+//     if($value){
+      
+//     } else {
+//       echo "entrou 2";
+
+
+//     sleep(2);
+
+//     echo $message;
+
+//     $message = $value;
+//     }
+
+// }
+
 
 if(count($_POST) > 0){
     $nome = $_POST["nome"];
@@ -29,8 +48,8 @@ if(count($_POST) > 0){
     $nova_senha = $_POST["senha"];
 
    
-    $sql_extra_img = "";
-    $sql_extra_senha = "";
+    $sql_extra = "";
+ 
 
 
     if(!empty($nova_senha)){
@@ -38,7 +57,7 @@ if(count($_POST) > 0){
             $erro = "A senha deve ter de 6 a 16 caracteres.";
         else {
             $senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
-            $sql_extra_senha = " senha = '$senha_criptografada', ";
+            $sql_extra = " senha = '$senha_criptografada', ";
         }
     }
 
@@ -53,7 +72,7 @@ if(count($_POST) > 0){
         if($path == false)
             $erro = "Falha ao enviar arquivo. Tente novamente.";
         else 
-            $sql_extra_img = " foto = '$path', ";
+            $sql_extra .= " foto = '$path', ";
 
         if($cliente["foto"]){
             unlink($cliente["foto"]);
@@ -88,17 +107,12 @@ if(count($_POST) > 0){
     }
 
     if(!$erro){
-        $message = false;
-
-        echo $sql_extra_senha;
-        echo $sql_extra_img;
         
         $sql_code = "UPDATE clientes
         SET nome = '$nome',
         email = '$email',
         telefone = '$telefone',
-        $sql_extra_senha
-        $sql_extra_img
+        $sql_extra
         nascimento = '$nascimento'
         
         WHERE id = '$id' ";
@@ -106,7 +120,7 @@ if(count($_POST) > 0){
         $worked = $mysqli->query($sql_code) or die($mysqli->error);
 
         if($worked){
-            $message = "<p> <b> Cliente atualizado com sucesso!!</p> </b>";
+            $message ="<p> <b> Cliente atualizado com sucesso!!</p> </b>";
             unset($_POST);
         }
     }
@@ -123,62 +137,7 @@ if(count($_POST) > 0){
     <title>Cadastrar Cliente</title>
     <link rel="stylesheet" href="css/default.css">
     <link rel="stylesheet" href="css/editar_cliente.css">
-    <!-- <style>
-    #voltar {
-        border-radius: 25px;
-        min-height: 35px;
-    }
-
-    #link {
-        text-decoration: none;
-        color: black;
-    }
-
-    section {
-        margin: 30px;
-    }
-
-    #container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    #form {
-        /* display: flex;
-        flex-direction: column;
-        justify-content: center; */
-        align-items: center;
-        padding: 0px 20px;
-        min-width: 200px;
-        width: 30%;
-
-        border: 1px solid black;
-        border-radius: 25px;
-    }
-
-    #button {
-        display: flex;
-        justify-content: center;
-        margin-top: 40px;
-
-        border-radius: 25%;
-        min-height: 35px;
-    }
-
-    #foto {
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-    }
-
-    #container-img {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-    } -->
-    </style>
+    <script type="text/javascript" src="js/changeMessageUpdate.js" defer></script>
 </head>
 
 <body>
@@ -235,29 +194,32 @@ if(count($_POST) > 0){
                             </span>
                         </p>
 
-
-                        <?php if($erro){?>
-                        <p id="error-message"><?php echo $erro . "*"?></p>
-                        <?php } else{?>
-                        <p id="error-message">itens obrigatórios!*</p>
-                        <?php }?>
-
-
-                        <p id="button">
-                            <button type="submit">Salvar cliente</button>
+                        <p>
+                            <button type="submit" id="button">Salvar cliente</button>
                         </p>
 
                     </form>
+
+                    <div id="to-hide-message">
+                        <?php echo $message ;
+                    
+                    sleep(2);
+                    ?>
+
+                    </div>
                 </div>
             </div>
+
+
+
+
         </section>
+
+
     </main>
 
 
-    <div>
-        <?php echo $message ?: $message ?>
 
-    </div>
 </body>
 
 </html>
