@@ -28,21 +28,24 @@ if(count($_POST) > 0){
     $telefone = $_POST["telefone"];
     $nova_senha = $_POST["senha"];
 
-    $sql_extra_senha = "";
+   
     $sql_extra_img = "";
+    $sql_extra_senha = "";
+
 
     if(!empty($nova_senha)){
         if(strlen($nova_senha) < 6 && strlen($nova_senha) < 16)
-            echo "A senha deve ter de 6 a 16 caracteres.";
+            $erro = "A senha deve ter de 6 a 16 caracteres.";
         else {
             $senha_criptografada = password_hash($nova_senha, PASSWORD_DEFAULT);
             $sql_extra_senha = " senha = '$senha_criptografada', ";
         }
     }
 
-    echo isset($_FILES["foto"]);
+    $path = null;
+    $file = $_FILES['foto'];
 
-    if(isset($_FILES["foto"])){
+    if(!empty($file['name'])){
         var_dump($_FILES);
         
         $arq = $_FILES['foto'];
@@ -84,9 +87,9 @@ if(count($_POST) > 0){
             $erro = "O telefone deve ser preechido no padrão (11) 4002-8922";
     }
 
-    if($erro){
-        echo "<p> <b>ERRO: $erro</p> </b>";
-    } else {
+    if(!$erro){
+        $message = false;
+
         echo $sql_extra_senha;
         echo $sql_extra_img;
         
@@ -103,7 +106,7 @@ if(count($_POST) > 0){
         $worked = $mysqli->query($sql_code) or die($mysqli->error);
 
         if($worked){
-            echo "<p> <b> Cliente atualizado com sucesso!!</p> </b>";
+            $message = "<p> <b> Cliente atualizado com sucesso!!</p> </b>";
             unset($_POST);
         }
     }
@@ -118,7 +121,9 @@ if(count($_POST) > 0){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Cliente</title>
-    <style>
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/editar_cliente.css">
+    <!-- <style>
     #voltar {
         border-radius: 25px;
         min-height: 35px;
@@ -172,7 +177,7 @@ if(count($_POST) > 0){
         display: flex;
         justify-content: space-between;
         gap: 20px;
-    }
+    } -->
     </style>
 </head>
 
@@ -184,57 +189,75 @@ if(count($_POST) > 0){
                     <a id="link" href="clientes.php">&#60; Voltar para a lista de cliente</a>
                 </button>
             </div>
-            <div id="container">
-                Editar cliente <?php echo $cliente["nome"]?>:
-                <form action="" method="POST" id="form" enctype="multipart/form-data">
-                    <p>
-                        <label for="">Nome:</label>
-                        <input value="<?php echo $cliente['nome']?>" name="nome" type="text">
-                    </p>
 
-                    <p>
-                        <label for="">Email:</label>
-                        <input value="<?php echo $cliente['email'] ?>" name="email" type="text">
-                    </p>
+            <div id="container-principal">
+                <div id="cotainer-do-formulario">
 
-                    <p>
-                        <label for="">Data de Nascimento:</label>
-                        <input
-                            value="<?php if(!empty($cliente['nascimento'])) echo formatar_data($cliente['nascimento']) ?>"
-                            name="nascimento" type="text">
-                    </p>
+                    <form action="" method="POST" id="form" enctype="multipart/form-data">
+                        <h1 id="titulo"> Editar cliente o <?php echo $cliente["nome"]?>:
+                        </h1>
+                        <p>
+                            <label class="label" for="">Nome</label>
+                            <input class="input" value="<?php echo $cliente['nome']?>" name="nome" type="text">
+                        </p>
+                        <p>
+                            <label class="label" for="">Email</label>
+                            <input class="input" value="<?php echo $cliente['email'] ?>" name="email" type="text">
+                        </p>
 
-                    <p>
-                        <label for="">Telefone:</label>
-                        <input
-                            value="<?php if(!empty($cliente['telefone'])) echo formatar_telefone($cliente['telefone']) ?>"
-                            name="telefone" type="text" placeholder="(11) 4002-8922">
-                    </p>
+                        <p>
+                            <label class="label" for="">Data de Nascimento</label>
+                            <input class="input"
+                                value="<?php if(!empty($cliente['nascimento'])) echo formatar_data($cliente['nascimento']) ?>"
+                                name="nascimento" type="text">
+                        </p>
 
-                    <p>
-                        <label for="">Nova senha:</label>
-                        <input name="senha" type="text">
-                    </p>
+                        <p>
+                            <label class="label" for="">Telefone</label>
+                            <input class="input"
+                                value="<?php if(!empty($cliente['telefone'])) echo formatar_telefone($cliente['telefone']) ?>"
+                                name="telefone" type="text" placeholder="(11) 4002-8922">
+                        </p>
 
-                    <p id="container-img">
-                        <img src="<?php echo isset($cliente['foto']) ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
+                        <p>
+                            <label for="">Nova senha</label>
+                            <input class="input" name="senha" type="text">
+                        </p>
+
+
+                        <p id="container-img">
+                            <img src="<?php echo isset($cliente['foto']) ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
 " alt="foto de perfil" id="foto">
 
-                        <span>
-                            <label for="">Foto do usuário:</label>
-                            <input type="file" name="foto">
-                        </span>
-                    </p>
+                            <span>
+                                <label for="">Foto do usuário</label>
+                                <input type="file" name="foto" id="escolher-ficheiro">
+                            </span>
+                        </p>
 
-                    <p id="button">
-                        <button type="submit">Salvar cliente</button>
-                    </p>
 
-                </form>
+                        <?php if($erro){?>
+                        <p id="error-message"><?php echo $erro . "*"?></p>
+                        <?php } else{?>
+                        <p id="error-message">itens obrigatórios!*</p>
+                        <?php }?>
+
+
+                        <p id="button">
+                            <button type="submit">Salvar cliente</button>
+                        </p>
+
+                    </form>
+                </div>
             </div>
         </section>
     </main>
 
+
+    <div>
+        <?php echo $message ?: $message ?>
+
+    </div>
 </body>
 
 </html>

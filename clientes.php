@@ -36,10 +36,10 @@
 <body>
 
     <header>
-        <button class="botao" class="header-button"><a href="logout.php" class="link">&#60; Logout</a></button>
+        <button class="header-button"><a href="logout.php" class="link">&#60; Logout</a></button>
 
         <?php if($_SESSION["admin"]){?>
-        <button class="botao" class="header-button"><a href="cadastrar_cliente.php" class="link"> Ir para o
+        <button class="header-button"><a href="cadastrar_cliente.php" class="link"> Ir para o
                 cadastro &#62;</a></button>
         <?php }?>
     </header>
@@ -90,7 +90,7 @@
                         <tr>
                             <td><?php echo $cliente['id']?></td>
                             <td><?php echo $cliente['admin'] === "1" ? "sim" : "não"?></td>
-                            <td id="image"><img src="<?php echo isset($cliente['foto']) ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
+                            <td id="image"><img src="<?php echo isset($cliente['foto'])  ? $cliente['foto'] : "arquivos/perfil.jpg" ?>
 " alt="foto de perfil" id="foto">
                             </td>
                             <td><?php echo $cliente['nome']?></td>
@@ -98,15 +98,17 @@
                             <td><?php echo $telefone?></td>
                             <td><?php echo $nascimento?></td>
                             <td><?php echo $data_de_cadastro?></td>
-                            <?php if($_SESSION["admin"] && $cliente['id'] != $id){?>
                             <td>
-                                <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>"><button>editar</button></a>
-                                <a
-                                    href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>"><button>deletar</button></a>
+                                <a href="editar_cliente.php?id=<?php echo $cliente['id'] ?>"><button
+                                        class="button-action edit-button">editar</button></a>
+                                <?php if($_SESSION["admin"] && $cliente['id'] != $id){?>
+
+                                <a href="deletar_cliente.php?id=<?php echo $cliente['id'] ?>"><button
+                                        class="button-action delete-button">deletar</button></a>
+
+                                <?php }  ?>
                             </td>
-                            <?php } else { ?>
-                            <td></td>
-                            <?php }?>
+
                         </tr>
                         <?php } } ?>
                     </tbody>
