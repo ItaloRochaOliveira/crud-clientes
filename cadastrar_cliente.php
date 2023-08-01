@@ -59,10 +59,9 @@ if(count($_POST) > 0){
         echo $telefone;
     }
 
-    $path = "";
+    $path = null;
     $file = $_FILES['foto'];
 
-    
     if(!empty($file['name'])){
         $arq = $_FILES['foto'];
         $path = enviar_arquivo($arq["error"], $arq["size"], $arq['name'], $arq["tmp_name"]);
@@ -89,10 +88,14 @@ if(count($_POST) > 0){
                 if(!isset($_SESSION))
                     session_start();
 
-                $_SESSION["user"] = $user["id"];
-                $_SESSION["admin"] = $user["admin"];
+                if($_SESSION['admin']){
+                    header("Location: clientes.php");
+                } else {
+                    $_SESSION["user"] = $user["id"];
+                    $_SESSION["admin"] = $user["admin"];
 
-                header("Location: clientes.php");
+                    header("Location: clientes.php");
+                }
             }
 
             
