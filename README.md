@@ -11,8 +11,6 @@ Os conteúdos principais a serem estudados são:
 - Conter todos os principais métodos: get, post, put e delete.
 - Autenticação.
 
-STATUS: Em processo...
-
 ### Layout Mobile
 
 | <img src="/assents/login_page_mobile.png" width=190 padding=10><br><sub>Login</sub> | <img src="/assents/home_page_mobile.png" width=190 padding=10><br><sub>Home Page</sub> |
